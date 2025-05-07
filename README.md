@@ -1,21 +1,20 @@
-ToDo Telegram Bot Project
-This is a test task for a backend developer position. The project includes a Django-based backend for managing a ToDo List, a Telegram bot built with Aiogram, and a Dockerized environment.
-Features
+# Django settings
+DJANGO_SECRET_KEY=1ucu_@guk+i@&@=tt5))8=bfz!i^nn3@_35maks%eqfdy)k-*=
+DEBUG=True
+ALLOWED_HOSTS=localhost,127.0.0.1
 
-Django backend with REST API for tasks and categories.
-Telegram bot for task management with dialog-based interaction.
-Notifications via Celery for task due dates.
-Docker setup for all services (Django, PostgreSQL, Redis, bot).
+# Database
+POSTGRES_DB=todo_db
+POSTGRES_USER=todo_user
+POSTGRES_PASSWORD=your-postgres-password
+POSTGRES_HOST=db
+POSTGRES_PORT=5432
 
-Setup Instructions
-(To be completed after implementation)
-Architecture
-(To be completed after implementation)
-Requirements
+# Redis
+REDIS_URL=redis://redis:6379/0
 
-Python 3.11+
-Docker and docker-compose
-Git
+# Telegram Bot
+BOT_TOKEN=your-bot-token-from-botfather
 
-License
-MIT
+# API
+API_BASE_URL=http://backend:8000/api/
