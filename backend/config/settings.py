@@ -20,7 +20,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'todo_app',
+    'backend.todo_app.apps.TodoAppConfig',
+    'django_celery_beat',
 ]
 
 MIDDLEWARE = [
@@ -33,7 +34,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'config.urls'
+ROOT_URLCONF = 'backend.config.urls'
 
 TEMPLATES = [
     {
@@ -51,7 +52,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'config.wsgi.application'
+WSGI_APPLICATION = 'backend.config.wsgi.application'
 
 import os
 print("Loaded POSTGRES_DB:", os.getenv('POSTGRES_DB'))
@@ -66,8 +67,7 @@ DATABASES = {
         'NAME': os.getenv('POSTGRES_DB', 'todo_db'),
         'USER': os.getenv('POSTGRES_USER', 'todo_user'),
         'PASSWORD': os.getenv('POSTGRES_PASSWORD', '12072003'),
-        #'HOST': os.getenv('POSTGRES_HOST', 'db'),
-        'HOST': os.getenv('POSTGRES_HOST', 'localhost'),
+        'HOST': os.getenv('POSTGRES_HOST', 'db'),
         'PORT': os.getenv('POSTGRES_PORT', '5432'),
     }
 }
@@ -104,3 +104,5 @@ CELERY_RESULT_BACKEND = os.getenv('REDIS_URL', 'redis://localhost:6379/0')
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
+
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'

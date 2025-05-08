@@ -18,10 +18,13 @@ services:
 
   backend:
     build: .
-    volumes:
-      - .:/app
+    command: >
+      sh -c "wait-for-it.sh db:5432 -- python manage.py migrate --noinput &&
+             python manage.py runserver 0.0.0.0:8000"
     ports:
       - "8000:8000"
+    volumes:
+      - .:/app
     depends_on:
       - db
       - redis
@@ -35,6 +38,41 @@ services:
       - POSTGRES_HOST=db
       - POSTGRES_PORT=5432
       - REDIS_URL=redis://redis:6379/0
+
+  celery:
+    build: .
+    command: celery -A backend.config worker --loglevel=info
+    volumes:
+      - .:/app
+    depends_on:
+      - backend
+      - redis
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+      - DJANGO_SETTINGS_MODULE=backend.config.settings
+
+  celery-beat:
+    build: .
+    command: celery -A backend.config beat --loglevel=info
+    volumes:
+      - .:/app
+    depends_on:
+      - backend
+      - redis
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+      - DJANGO_SETTINGS_MODULE=backend.config.settings
+
+  bot:
+    build: .
+    command: python /app/bot.py
+    volumes:
+      - .:/app
+    depends_on:
+      - backend
+    environment:
+      - BOT_TOKEN=${BOT_TOKEN}
+      - API_BASE_URL=${API_BASE_URL}
 
 volumes:
   postgres_data:
