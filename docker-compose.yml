@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   db:
     image: postgres:15
@@ -8,7 +6,8 @@ services:
     environment:
       - POSTGRES_DB=todo_db
       - POSTGRES_USER=todo_user
-      - POSTGRES_PASSWORD=MySecurePass123!
+      - POSTGRES_PASSWORD=12072003
+      - POSTGRES_INITDB_ARGS=--auth-host=trust
     ports:
       - "5432:5432"
 
@@ -19,7 +18,6 @@ services:
 
   backend:
     build: .
-    command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/app
     ports:

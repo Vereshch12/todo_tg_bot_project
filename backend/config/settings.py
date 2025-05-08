@@ -53,13 +53,21 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
+import os
+print("Loaded POSTGRES_DB:", os.getenv('POSTGRES_DB'))
+print("Loaded POSTGRES_USER:", os.getenv('POSTGRES_USER'))
+print("Loaded POSTGRES_PASSWORD:", os.getenv('POSTGRES_PASSWORD'))
+print("Loaded POSTGRES_HOST:", os.getenv('POSTGRES_HOST'))
+print("Loaded POSTGRES_PORT:", os.getenv('POSTGRES_PORT'))
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.getenv('POSTGRES_DB', 'todo_db'),
         'USER': os.getenv('POSTGRES_USER', 'todo_user'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'MySecurePass123!'),
-        'HOST': os.getenv('POSTGRES_HOST', 'db'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', '12072003'),
+        #'HOST': os.getenv('POSTGRES_HOST', 'db'),
+        'HOST': os.getenv('POSTGRES_HOST', 'localhost'),
         'PORT': os.getenv('POSTGRES_PORT', '5432'),
     }
 }
