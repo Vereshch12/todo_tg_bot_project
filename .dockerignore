@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Virtual environments
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Django
+*.log
+*.pot
+local_settings.py
+*.sqlite3
+
+# Secrets
+.env
+
+# IDEs and editors
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Docker
+docker-compose.override.yml
+
+# Git
+.git
+.gitignore
+
+# Miscellaneous
+.DS_Store
+*.swp
+*~
+*.md
