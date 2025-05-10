@@ -4,9 +4,10 @@ import logging
 from aiogram import Bot, Dispatcher
 from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram_dialog import setup_dialogs
-from handlers import setup_handlers
+from handlers import router as main_router
+from task_handlers import router as task_router
+from dialogs import task_dialog
 
-# Настройка логирования
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -15,8 +16,13 @@ async def main():
     bot = Bot(token=os.getenv("BOT_TOKEN"))
     storage = MemoryStorage()
     dp = Dispatcher(storage=storage)
-    setup_handlers(dp)
+
+    dp.include_router(main_router)
+    dp.include_router(task_router)
+    dp.include_router(task_dialog)
+
     setup_dialogs(dp)
+
     logger.info("Bot is running and polling for updates...")
     try:
         await dp.start_polling(bot, skip_updates=True)

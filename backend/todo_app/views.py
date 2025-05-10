@@ -25,14 +25,12 @@ class TaskListView(generics.ListCreateAPIView):
             raise ValueError("telegram_id is required")
         try:
             user_profile = UserProfile.objects.get(telegram_id=telegram_id)
-            # Сохраняем задачу без категорий
             task = serializer.save(user=user_profile.user)
-            # Обрабатываем категории
             categories_data = self.request.data.get('categories', [])
             if categories_data:
                 category_objects = []
                 for category_name in categories_data:
-                    if category_name.strip():  # Пропускаем пустые названия
+                    if category_name.strip():
                         category, _ = Category.objects.get_or_create(
                             user=user_profile.user,
                             name=category_name,
@@ -47,6 +45,30 @@ class TaskDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
     lookup_field = 'id'
+
+    def perform_update(self, serializer):
+        task = self.get_object()
+        telegram_id = self.request.query_params.get('telegram_id')
+        if telegram_id:
+            try:
+                user_profile = UserProfile.objects.get(telegram_id=telegram_id)
+                if task.user != user_profile.user:
+                    raise ValueError("You can only update your own tasks")
+            except UserProfile.DoesNotExist:
+                raise ValueError("User with this telegram_id does not exist")
+        serializer.save()
+        categories_data = self.request.data.get('categories', [])
+        if categories_data:
+            category_objects = []
+            for category_name in categories_data:
+                if category_name.strip():
+                    category, _ = Category.objects.get_or_create(
+                        user=task.user,
+                        name=category_name,
+                        defaults={'description': ''}
+                    )
+                    category_objects.append(category)
+            task.categories.set(category_objects)
 
 class LinkTelegramIDView(APIView):
     def post(self, request):
