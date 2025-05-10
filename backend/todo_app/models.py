@@ -44,7 +44,7 @@ class Task(CustomPKModel):
     description = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    due_date = models.DateTimeField(null=True, blank=True)  # Дедлайн необязателен
+    due_date = models.DateTimeField(null=True, blank=True)
     categories = models.ManyToManyField(Category, related_name='tasks')
     completed = models.BooleanField(default=False)
     notified = models.BooleanField(default=False)
