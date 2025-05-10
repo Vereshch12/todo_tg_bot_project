@@ -8,7 +8,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class TaskSerializer(serializers.ModelSerializer):
     categories = CategorySerializer(many=True, read_only=True)
-    user = serializers.StringRelatedField()  # Отображение имени пользователя
+    user = serializers.StringRelatedField(read_only=True)  # Отображение имени пользователя
 
     class Meta:
         model = Task

@@ -65,7 +65,7 @@ services:
 
   bot:
     build: .
-    command: python /app/bot.py
+    command: sh -c "wait-for-it.sh backend:8000 -- python /app/tgBot/bot.py"
     volumes:
       - .:/app
     depends_on:
@@ -73,6 +73,7 @@ services:
     environment:
       - BOT_TOKEN=${BOT_TOKEN}
       - API_BASE_URL=${API_BASE_URL}
+    restart: on-failure
 
 volumes:
   postgres_data:
