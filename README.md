@@ -13,6 +13,7 @@
 
 ### Клонируйте репозиторий:
 git clone <ссылка_на_репозиторий>
+
 cd todo_tg_bot_project
 
 
@@ -21,16 +22,27 @@ cd todo_tg_bot_project
 cp .env.example .env
 
 Пример .env:
+
 DJANGO_SECRET_KEY=ваш_секретный_ключ
+
 DEBUG=True
+
 ALLOWED_HOSTS=localhost,127.0.0.1,backend
+
 POSTGRES_DB=todo_db
+
 POSTGRES_USER=todo_user
+
 POSTGRES_PASSWORD=ваш_пароль
+
 POSTGRES_HOST=db
+
 POSTGRES_PORT=5432
+
 REDIS_URL=redis://redis:6379/0
+
 BOT_TOKEN=ваш_токен_бота
+
 API_BASE_URL=http://backend:8000/api/
 
 
@@ -41,6 +53,7 @@ docker-compose up --build
 ### Проверьте доступность:
 
 Django Admin: http://localhost:8000/admin/ (создайте суперпользователя командой docker-compose exec backend python manage.py createsuperuser).
+
 Telegram-бот: Найдите бота в Telegram по токену и используйте команды /start, /add_task, /show_tasks.
 
 
@@ -50,23 +63,31 @@ Telegram-бот: Найдите бота в Telegram по токену и исп
 ### Django (бэкенд):
 
 Модели: UserProfile (связь с Telegram ID), Task (задачи), Category (категории).
+
 API: REST API для задач (/api/tasks/) и привязки Telegram ID (/api/link_telegram_id/).
+
 Celery: Уведомления о дедлайнах через задачу check_due_tasks, запускаемую каждую минуту.
+
 Админ-панель: Управление задачами, категориями и профилями.
+
 База данных: PostgreSQL, Redis для Celery.
+
 Часовой пояс: America/Adak.
 
 
 ### Aiogram (телеграм-бот):
 
 Функции: Просмотр задач с датой создания, добавление задач через диалог, удаление, завершение и редактирование.
+
 Диалоги: aiogram-dialog для пошагового ввода данных задачи (название, описание, дедлайн, категории).
+
 Интеграция: Асинхронные запросы к Django API через aiohttp.
 
 
 ### Docker:
 
 Сервисы: db (PostgreSQL), redis, backend (Django), celery, celery-beat, bot (Aiogram).
+
 Синхронизация: Используется wait-for-it.sh для ожидания готовности сервисов.
 
 
