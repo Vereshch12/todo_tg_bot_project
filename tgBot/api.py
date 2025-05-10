@@ -3,6 +3,7 @@ import aiohttp
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
+
 async def link_telegram_id(telegram_id):
     async with aiohttp.ClientSession() as session:
         async with session.post(
